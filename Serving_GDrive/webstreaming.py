@@ -30,6 +30,9 @@ app = Flask(__name__)
 # vs = VideoStream(usePiCamera=1).start()
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
+gauth = GoogleAuth()
+gauth.LocalWebserverAuth()
+drive = GoogleDrive(gauth)
 
 
 @app.route("/")
@@ -102,9 +105,6 @@ def upload():
         filename = timestamp.strftime("%d-%m-%Y_%H-%M-%S") + ".jpg"
         cv2.imwrite("./upload/" + filename, outputFrame)
 
-    gauth = GoogleAuth()
-    gauth.LocalWebserverAuth()
-    drive = GoogleDrive(gauth)
     file_drive = drive.CreateFile(
         {'title': filename, 'mimeType': 'image/jpeg'})
     file_drive.SetContentFile("./upload/" + filename)
